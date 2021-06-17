@@ -1,25 +1,35 @@
 <script>
-  let firstName = "Jiminy";
-  let lastName = "Crockett";
-  let beltColor = "lightseagreen";
-  $: fullName = `${firstName} ${lastName}`;
-  const handleClick = () => {
-    beltColor = "alicewhite";
+  import Modal from "./Modal.svelte";
+  let people = [
+    { name: "yoshi", beltColour: "black", age: 25, id: 1 },
+    { name: "mario", beltColour: "orange", age: 45, id: 2 },
+    { name: "luigi", beltColour: "brown", age: 35, id: 3 },
+  ];
+
+  const handleClick = (id) => {
+    people = people.filter((person) => person.id !== id);
+    num += 10;
   };
 
-  const handleInput = (event) => {
-    name = event.target.value;
-  };
+  let num = 5;
 </script>
 
 <main>
-  <p style="color: {beltColor}">{beltColor} belt</p>
-  <input type="text" bind:value={firstName} />
-
-  <input type="text" bind:value={lastName} />
-  <input type="text" bind:value={beltColor} />
-
-  <p>Full Name - {fullName}</p>
+  <Modal />
+  {#if num > 20}
+    <p>Greater than 20</p>
+  {/if}
+  {#each people as person (person.id)}
+    <h1>{person.name}</h1>
+    <p style="color:{person.beltColour}">{person.beltColour}</p>
+    <button
+      on:click={() => {
+        handleClick(person.id);
+      }}>Delete</button
+    >
+  {:else}
+    <p>...</p>
+  {/each}
 </main>
 
 <style>
@@ -28,13 +38,6 @@
     padding: 1em;
     max-width: 240px;
     margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
   }
 
   @media (min-width: 640px) {
