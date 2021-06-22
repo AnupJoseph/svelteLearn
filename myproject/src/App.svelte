@@ -1,5 +1,6 @@
 <script>
   import Modal from "./Modal.svelte";
+  import AddPersonForm from "./AddPersonForm.svelte";
 
   let showModal = false;
   let people = [
@@ -20,12 +21,9 @@
   let num = 5;
 </script>
 
-<Modal
-  message="Sign up here"
-  isPromo={true}
-  {showModal}
-  on:click={toggleModal}
-/>
+<Modal isPromo={true} {showModal} on:click={toggleModal}>
+  <AddPersonForm />
+</Modal>
 <main>
   <button on:click|once={toggleModal}>Show Modal</button>
   {#if num > 20}
