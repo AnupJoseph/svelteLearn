@@ -18,11 +18,17 @@
     showModal = !showModal;
   };
 
+  const addPerson = (event) => {
+    const person = event.detail
+    people = [...people,person]
+    toggleModal()
+  };
+
   let num = 5;
 </script>
 
 <Modal isPromo={true} {showModal} on:click={toggleModal}>
-  <AddPersonForm />
+  <AddPersonForm on:addPerson={addPerson} />
 </Modal>
 <main>
   <button on:click|once={toggleModal}>Show Modal</button>
