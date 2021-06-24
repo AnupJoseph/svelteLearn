@@ -19,9 +19,9 @@
   };
 
   const addPerson = (event) => {
-    const person = event.detail
-    people = [...people,person]
-    toggleModal()
+    const person = event.detail;
+    people = [...people, person];
+    toggleModal();
   };
 
   let num = 5;
