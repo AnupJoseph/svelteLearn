@@ -1,10 +1,20 @@
 <script>
   import Header from "./components/Header.svelte";
   import Footer from "./components/Footer.svelte";
+  import Tabs from "./shared/Tabs.svelte";
+
+  let items = ["Current polls", "Add New Poll"];
+  let activeItem = "Current polls";
+
+  const tabChange = (event) => {
+    activeItem = event.detail;
+  };
 </script>
 
 <Header />
-<main />
+<main>
+  <Tabs {items} {activeItem} on:tabChange={tabChange} />
+</main>
 <Footer />
 
 <style>
