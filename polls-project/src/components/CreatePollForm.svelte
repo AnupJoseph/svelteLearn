@@ -1,20 +1,19 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import Button from "../shared/Button.svelte";
 
   let dispatch = createEventDispatcher();
-
-  import Button from "../shared/Button.svelte";
   let field = {
-    question: "",
-    answerA: "",
-    answerB: "",
-  };
-  let error = {
-    question: "",
-    answerA: "",
-    answerB: "",
-  };
-  let valid = false;
+      question: "",
+      answerA: "",
+      answerB: "",
+    },
+    error = {
+      question: "",
+      answerA: "",
+      answerB: "",
+    },
+    valid = false;
 
   const submitHandler = () => {
     valid = true;
@@ -61,7 +60,6 @@
     <input type="text" id="answer-b" bind:value={field.answerB} />
     <div class="error">{error.answerB}</div>
   </div>
-  <!-- <button>Submit</button> -->
   <Button type={"secondary"} flat={true}><div>Add Poll</div></Button>
 </form>
 
