@@ -1,17 +1,38 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  // Local imports
   import Card from "../shared/Card.svelte";
+  import Button from "../shared/Button.svelte";
+  import PollStore from "../stores/PollStore";
 
-  const dispatch = createEventDispatcher();
+  // Tweening imports
+  import { tweened } from "svelte/motion";
 
   export let poll;
   //   reactive value
   $: totalVotes = poll.votesA + poll.votesB;
-  $: percentA = Math.floor((100 / totalVotes) * poll.votesA);
-  $: percentB = Math.floor((100 / totalVotes) * poll.votesB);
+  $: percentA = Math.floor((100 / totalVotes) * poll.votesA)||0;
+  $: percentB = Math.floor((100 / totalVotes) * poll.votesB)||0;
+
+  const tweenedA = tweened(0),
+    tweenedB = tweened(0);
+
+  $: tweenedA.set(percentA);
+  $: tweenedB.set(percentB);
+
 
   const handleVote = (option, id) => {
-    dispatch("vote", { option, id });
+    PollStore.update((currentPolls) => {
+      let copiedPolls = [...currentPolls];
+      let upvotedPoll = copiedPolls.find((item) => item.id === id);
+      option === "a" ? upvotedPoll.votesA++ : upvotedPoll.votesB++;
+      return copiedPolls;
+    });
+  };
+
+  const handleDelete = (id) => {
+    PollStore.update((currentPolls) => {
+      return currentPolls.filter((poll) => poll.id != id);
+    });
   };
 </script>
 
@@ -20,12 +41,15 @@
     <h3>{poll.question}</h3>
     <p>Total votes → {totalVotes}</p>
     <div class="answer" on:click={() => handleVote("a", poll.id)}>
-      <div class="percent percent-a" style="width:{percentA}%" />
+      <div class="percent percent-a" style="width:{$tweenedA}%" />
       <span>{poll.answerA} → ({poll.votesA})</span>
     </div>
     <div class="answer" on:click={() => handleVote("b", poll.id)}>
-      <div class="percent percent-b" style="width:{percentB}%" />
+      <div class="percent percent-b" style="width:{$tweenedB}%" />
       <span>{poll.answerB} → ({poll.votesB})</span>
+    </div>
+    <div class="delete">
+      <Button flat={true} on:click={() => handleDelete(poll.id)}>Delete</Button>
     </div>
   </div>
 </Card>
@@ -68,5 +92,9 @@
   .percent-b {
     background: rgba(69, 196, 150, 0.4);
     border: 2px dashed rgba(69, 196, 150, 0.8);
+  }
+  .delete {
+    margin-top: 30px;
+    text-align: center;
   }
 </style>

@@ -8,6 +8,8 @@
   import CreatePollForm from "./components/CreatePollForm.svelte";
   import PollList from "./components/PollList.svelte";
 
+  // Tweens
+
   let items = ["Current polls", "Add New Poll"];
   let activeItem = "Current polls";
 
@@ -16,17 +18,7 @@
   };
 
   const handleAdd = (event) => {
-    const poll = event.detail;
-    polls = [poll, ...polls];
     activeItem = "Current polls";
-  };
-
-  const handleVote = (event) => {
-    const { option, id } = event.detail;
-    let copiedPolls = [...polls];
-    let upvotedPoll = copiedPolls.find((item) => item.id === id);
-    option === "a" ? upvotedPoll.votesA++ : upvotedPoll.votesB++;
-    polls = copiedPolls
   };
 </script>
 
@@ -34,7 +26,7 @@
 <main>
   <Tabs {items} {activeItem} on:tabChange={tabChange} />
   {#if activeItem === "Current polls"}
-    <PollList on:vote={handleVote} />
+    <PollList />
   {:else if activeItem === "Add New Poll"}
     <CreatePollForm on:add={handleAdd} />
   {/if}
