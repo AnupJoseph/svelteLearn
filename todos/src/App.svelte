@@ -1,18 +1,15 @@
 <script>
-	import Icon from "svelte-awesome";
-	import { adjust } from "svelte-awesome/icons";
+	// Internel components
+	import Header from "./shared/Header.svelte";
+	import Todos from "./shared/Todos.svelte";
+	import Form from "./components/Form.svelte";
+	// import Icon from "svelte-awesome";
+	// import { adjust } from "svelte-awesome/icons";
 </script>
 
 <main>
-	<h1>Todos App</h1>
-	<!-- <i class="fas fa-adjust"></i> -->
-	<Icon data={adjust} spin label="Adjust icon"></Icon>
+	<Header></Header>
+	<Form></Form>
+	<Todos></Todos>
+	<!-- <Icon data={adjust} spin label="Adjust icon"></Icon> -->
 </main>
-
-<style>
-	h1{
-		font-family:"Poppins";
-		font-weight: bold;
-	}
-	
-</style>
