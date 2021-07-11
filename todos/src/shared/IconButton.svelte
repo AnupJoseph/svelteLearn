@@ -10,7 +10,7 @@
   };
 </script>
 
-<button class={type}>
+<button class={type} on:click>
   <Icon data={iconsArray[icon]} />
 </button>
 
