@@ -6,8 +6,19 @@
   // Animation-svelte
   import { fade, scale } from "svelte/transition";
   import { flip } from "svelte/animate";
+  import { cubicOut } from "svelte/easing";
 
-  const handleDelete = (id) => {
+  function dropout(node, { duration = 2000, delay = 1000 }) {
+    return {
+      duration,
+      css: (t) => `transform: translateY(${(1 - t) * 8 * 8}rem) rotateZ(${
+        (1 - t) * 20 * 8
+      }deg);
+			opacity:${0.5 + t}`,
+    };
+  }
+
+  const finishDelete = (id) => {
     TodoStore.update((currentTodos) => {
       return currentTodos.filter((todo) => todo.id != id);
     });
@@ -31,6 +42,7 @@
         class="todo"
         class:complete={todo.completed}
         in:fade
+        out:dropout={{ duration: 1500, delay: 1000 }}
         animate:flip={{ duration: 500 }}
       >
         <li>{todo.detail}</li>
@@ -42,7 +54,7 @@
         <IconButton
           type={"trash-mark"}
           icon={"trash"}
-          on:click={() => handleDelete(todo.id)}
+          on:click={() => finishDelete(todo.id)}
         />
       </div>
     {/each}
@@ -50,6 +62,9 @@
 </div>
 
 <style>
+  div {
+    transition: all 2s ease;
+  }
   ul {
     min-width: 30%;
     list-style: none;
