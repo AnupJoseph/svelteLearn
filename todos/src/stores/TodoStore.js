@@ -4,7 +4,8 @@ const TodoStore = writable([
     {
         is:1,
         detail:"Finish JS course",
-        completed:false
+        completed:false,
+        render:false
     }
 ])
 
