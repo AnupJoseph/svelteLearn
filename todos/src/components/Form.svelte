@@ -1,6 +1,7 @@
 <script>
   // Internal imports
   import TodoStore from "../stores/TodoStore";
+  import Filter from "./Filter.svelte";
 
   import Icon from "svelte-awesome";
   import { plusSquare } from "svelte-awesome/icons";
@@ -23,6 +24,7 @@
   <button type="submit" on:click>
     <Icon data={plusSquare} scale="2" style="display: flex;" />
   </button>
+  <Filter />
 </form>
 
 <style>
