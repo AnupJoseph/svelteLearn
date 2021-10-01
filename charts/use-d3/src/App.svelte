@@ -4,11 +4,6 @@
 
   // Load data
   let dataset = [];
-  csv("/data/Colors MDN.csv", function (data) {
-    return data;
-  }).then((data) => {
-    dataset = data;
-  });
   onMount(async () => {
     dataset = await csv("data/Colors MDN.csv");
   });

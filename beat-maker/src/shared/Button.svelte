@@ -1,9 +1,9 @@
 <script>
-  // Compoent Imports
-  import Icon from "svelte-awesome";
-  import { volumeOff } from "svelte-awesome/icons";
+  // Component Imports
+  import Fa from "svelte-fa";
+  import { faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 </script>
 
 <button>
-  <Icon data={volumeOff}/>
+  <Fa icon={faVolumeMute} />
 </button>
