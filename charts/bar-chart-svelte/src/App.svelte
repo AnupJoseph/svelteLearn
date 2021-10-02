@@ -1,6 +1,7 @@
 <script>
   // D3 stuff
   import { csv, scaleBand, scaleLinear, max } from "d3";
+  import { fly } from "svelte/transition";
 
   // Load dataset
   let dataset = [];
@@ -30,12 +31,25 @@
 <main>
   <svg {width} {height}>
     <g transform={`translate(${margin.left},${margin.top})`}>
-      {#each dataset as data}
+      {#each xScale.ticks() as tick, i}
+        <g transform={`translate(${xScale(tick)},${0})`}>
+          <line
+            y2={innerHeight}
+            stroke="black"
+            in:fly={{ duration: 500 * i }}
+          />
+          <text y={innerHeight + 3} dy="0.8em" style="text-anchor: middle;"
+            >{tick}</text
+          >
+        </g>
+      {/each}
+      {#each dataset as data, i}
         <rect
           x={0}
           y={yScale(data.Location)}
           width={xScale(data.Population)}
           height={yScale.bandwidth()}
+          in:fly={{ duration: 500 * i }}
         />
       {/each}
     </g>
