@@ -14,9 +14,9 @@
   });
 
   // Actual graph work
-  const width = 600,
+  const width = 800,
     height = 600,
-    margin = { top: 20, right: 20, left: 20, bottom: 20 };
+    margin = { top: 20, right: 20, left: 200, bottom: 20 };
   const innerHeight = height - margin.top - margin.bottom,
     innerWidth = width - margin.left - margin.right;
   $: yScale = scaleBand()
@@ -42,6 +42,14 @@
             >{tick}</text
           >
         </g>
+      {/each}
+      {#each yScale.domain() as tick, i}
+        <text
+          x="-3"
+          y={yScale(tick) + yScale.bandwidth() / 2}
+          style="text-anchor: end;"
+          dy="0.32em">{tick}</text
+        >
       {/each}
       {#each dataset as data, i}
         <rect
