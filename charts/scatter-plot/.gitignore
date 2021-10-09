@@ -1,0 +1,6 @@
+/node_modules/
+/public/build/
+
+.DS_Store
+/charts/bar-chart-svelte/public/data/WPP2019_POP_F01_1_TOTAL_POPULATION_BOTH_SEXES.xlsx
+
