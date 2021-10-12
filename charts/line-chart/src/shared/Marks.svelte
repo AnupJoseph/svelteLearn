@@ -1,5 +1,5 @@
 <script>
-  import { fly } from "svelte/transition";
+  import { fly, fade } from "svelte/transition";
   import { curveNatural, line } from "d3";
   export let dataset;
   export let xScale;
@@ -12,9 +12,14 @@
 </script>
 
 <path d={line_gen} />
-<!-- {#each dataset as data, i}
-  <circle cx={xScale(data.timestamp)} cy={yScale(data.temperature)} r="3" />
-{/each} -->
+{#each dataset as data, i}
+  <circle
+    cx={xScale(data.timestamp)}
+    cy={yScale(data.temperature)}
+    r="3"
+    in:fly={{ duration: 8500, delay: i * 20 }}
+  />
+{/each}
 
 <style>
   circle {
@@ -27,7 +32,7 @@
     stroke-linejoin: round;
     stroke-dasharray: 4400;
     stroke-dashoffset: 0;
-    animation: dash 8s ease-in-out;
+    animation: dash 8.5s ease-in-out;
   }
   @keyframes dash {
     from {

@@ -35,7 +35,8 @@
 
   $: yScale = scaleLinear()
     .domain(extent(dataset, (d) => d.temperature))
-    .range([innerHeight, 0]);
+    .range([innerHeight, 0])
+    .nice();
 
   const xAxislabel = "Time",
     yAxisLabel = "Temperature";
