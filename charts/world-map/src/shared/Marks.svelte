@@ -1,36 +1,27 @@
 <script>
-  import { draw } from "svelte/transition";
-  import { curveNatural, line, geoPath, geoEqualEarth } from "d3";
-  export let dataset;
+  import { geoPath, geoNaturalEarth1 } from "d3";
+  export let countries = "";
+  export let interiors = "";
 
-  const projection = geoEqualEarth();
+  const projection = geoNaturalEarth1();
   const path = geoPath(projection);
 </script>
 
-{console.log(dataset)}
-{#each dataset.features as data}
+<path class="sphere" d={path({ type: "Sphere" })} />
+{#each countries as data}
   <path d={path(data)} />
 {/each}
+<path class="interiors" d={path(interiors)} />
 
 <style>
-  circle {
-    fill: #137880;
-  }
   path {
-    fill: transparent;
-    stroke: rgb(8, 250, 137);
-    stroke-width: 2.5;
-    stroke-linejoin: round;
-    stroke-dasharray: 4400;
-    stroke-dashoffset: 0;
-    animation: dash 8.5s ease-in-out;
+    fill: #137b80;
   }
-  @keyframes dash {
-    from {
-      stroke-dashoffset: 4400;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
+  .sphere {
+    fill: #cecece;
+  }
+  .interiors {
+    fill: transparent;
+    stroke: #339498;
   }
 </style>
