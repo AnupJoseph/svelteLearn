@@ -1,6 +1,6 @@
 <script>
   // D3 stuff
-  import { csv, scaleLinear, scaleTime, format, extent, timeFormat } from "d3";
+  import { csv, scaleLinear, max, format, extent } from "d3";
 
   // Components
   import AxisBottom from "./shared/AxisBottom.svelte";
@@ -11,48 +11,53 @@
   // Load dataset
   let dataset = [];
   const row = function (data) {
-    data.temperature = +data.temperature;
-    data.timestamp = new Date(data.timestamp);
+    data.sepal_length = +data.sepal_length;
+    data.sepal_width = +data.sepal_width;
+    data.petal_length = +data.petal_length;
+    data.petal_width = +data.petal_width;
     return data;
   };
   csv(
-    "https://gist.githubusercontent.com/curran/60b40877ef898f19aeb8/raw/9476be5bd15fb15a6d5c733dd79788fb679c9be9/week_temperature_sf.csv",
+    "https://gist.githubusercontent.com/curran/9e04ccfebeb84bcdc76c/raw/3d0667367fce04e8ca204117c290c42cece7fde0/iris.csv",
     row
-  ).then((data) => (dataset = data));
+  ).then((data) => (dataset = data.slice(0, 100)));
 
   // Actual graph work
-  const width = 1200,
-    height = 600,
+  const width = 840,
+    height = 840,
     margin = { top: 20, right: 20, left: 150, bottom: 65 };
   const innerHeight = height - margin.top - margin.bottom,
     innerWidth = width - margin.left - margin.right;
 
-  const tickFormat = (value) => timeFormat("%a")(value);
+  const tickFormat = (value) => format(".2s")(value).replace("G", "B");
 
-  $: xScale = scaleTime()
-    .domain(extent(dataset, (d) => d.timestamp))
+  let options = ["sepal_length", "sepal_width", "petal_length", "petal_width"];
+
+  $: xSelected = "sepal_width";
+  $: ySelected = "petal_length";
+
+  $: xScale = scaleLinear()
+    .domain(extent(dataset, (d) => d[xSelected]))
     .range([0, innerWidth])
     .nice();
 
   $: yScale = scaleLinear()
-    .domain(extent(dataset, (d) => d.temperature))
-    .range([innerHeight, 0])
+    .domain(extent(dataset, (d) => d.sepal_width))
+    .range([0, innerHeight])
     .nice();
-
-  const xAxislabel = "Time",
-    yAxisLabel = "Temperature";
 </script>
 
 <main>
+  <DropDown {options} bind:value={xSelected} />
   <svg {width} {height}>
     <g transform={`translate(${margin.left},${margin.top})`}>
       <AxisBottom {xScale} {innerHeight} {tickFormat} />
       <text transform={`translate(${-100},${innerHeight / 2}) rotate(-90)`}
-        >{yAxisLabel}</text
+        >{ySelected}</text
       >
       <AxisLeft {yScale} {innerWidth} />
-      <text x={innerWidth / 2} y={innerHeight + 50}>{xAxislabel}</text>
-      <Marks {dataset} {xScale} {yScale} />
+      <text x={innerWidth / 2} y={innerHeight + 50}>{xSelected}</text>
+      <Marks {dataset} {xScale} {yScale} {xSelected} {ySelected} />
     </g>
   </svg>
 </main>
@@ -62,9 +67,5 @@
     text-anchor: middle;
     font-size: 2em;
     fill: rgb(71, 68, 65);
-  }
-  svg {
-    display: block;
-    position: absolute;
   }
 </style>
